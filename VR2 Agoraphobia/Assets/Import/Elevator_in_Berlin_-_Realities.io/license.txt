@@ -1,0 +1,11 @@
+Model Information:
+* title:	Elevator in Berlin - Realities.io
+* source:	https://sketchfab.com/3d-models/elevator-in-berlin-realitiesio-7c759a68446c4bf3b109bfa9cea974ae
+* author:	Azad Balabanian (https://sketchfab.com/azadbal)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Elevator in Berlin - Realities.io" (https://sketchfab.com/3d-models/elevator-in-berlin-realitiesio-7c759a68446c4bf3b109bfa9cea974ae) by Azad Balabanian (https://sketchfab.com/azadbal) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
