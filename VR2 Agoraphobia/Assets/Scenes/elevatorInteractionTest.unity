@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18387833, g: 0.229, b: 0.30297488, a: 1}
+  m_IndirectSpecularColor: {r: 0.17672709, g: 0.22121416, b: 0.3035121, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -394,6 +394,61 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &561623345
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 561623346}
+  - component: {fileID: 561623347}
+  m_Layer: 0
+  m_Name: Doors
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &561623346
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561623345}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 604274444}
+  - {fileID: 2118598813}
+  m_Father: {fileID: 1193849891}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &561623347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561623345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27ce72ce2aa8de6438abfc3b1436bdc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOpen: 0
+  sliding: 0
+  doorLeft: {fileID: 604274443}
+  doorRight: {fileID: 2118598812}
+  slideTime: 0
+  t: 0.35
+  startPosL: 0
+  endPosL: 0
+  startPosR: 0
+  endPosR: 0
 --- !u!1 &604274443
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,7 +462,7 @@ GameObject:
   - component: {fileID: 604274446}
   - component: {fileID: 604274445}
   m_Layer: 0
-  m_Name: Cube (5)
+  m_Name: doorLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -422,10 +477,10 @@ Transform:
   m_GameObject: {fileID: 604274443}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0.58, y: 0.9, z: -3.19}
-  m_LocalScale: {x: 2.1669302, y: 5, z: 0.10000001}
+  m_LocalScale: {x: 2.1669302, y: 5, z: 0.10000002}
   m_Children: []
-  m_Father: {fileID: 1193849891}
-  m_RootOrder: 5
+  m_Father: {fileID: 561623346}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!65 &604274445
 BoxCollider:
@@ -740,8 +795,7 @@ Transform:
   - {fileID: 1595541273}
   - {fileID: 608601180}
   - {fileID: 2109226944}
-  - {fileID: 604274444}
-  - {fileID: 2118598813}
+  - {fileID: 561623346}
   m_Father: {fileID: 1123673558}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1356,7 +1410,7 @@ GameObject:
   - component: {fileID: 2118598815}
   - component: {fileID: 2118598814}
   m_Layer: 0
-  m_Name: Cube (6)
+  m_Name: doorRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1371,10 +1425,10 @@ Transform:
   m_GameObject: {fileID: 2118598812}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0.58, y: 0.9, z: -1.03}
-  m_LocalScale: {x: 2.1669302, y: 5, z: 0.10000001}
+  m_LocalScale: {x: 2.1669302, y: 5, z: 0.10000002}
   m_Children: []
-  m_Father: {fileID: 1193849891}
-  m_RootOrder: 6
+  m_Father: {fileID: 561623346}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!65 &2118598814
 BoxCollider:
