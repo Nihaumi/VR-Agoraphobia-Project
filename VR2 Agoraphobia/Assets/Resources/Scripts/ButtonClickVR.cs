@@ -7,7 +7,7 @@ public class ButtonClickVR : MonoBehaviour
     public Renderer btnRenderer;
     public GameObject indexFinger;
     float dist;
-    float touchDist = 0.8f;
+    public float touchDist = 0.15f;
     bool touching;
     public bool animationDone;
 

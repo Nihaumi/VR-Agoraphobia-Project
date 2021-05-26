@@ -24,11 +24,15 @@ public class ElevatorMovement : MonoBehaviour
     public float endPosDown;
     public float endPosUp;
 
-
+    GameObject ManagerOfButtons;
+    ButtonManager btnManageScript;
 
     // Start is called before the first frame update
     void Start()
     {
+        ManagerOfButtons = GameObject.Find("ButtonManager");
+        btnManageScript = ManagerOfButtons.GetComponent<ButtonManager>();
+
         isMoving = false;
         speed = 1;
         currentPos = elevator.transform.position.y;
@@ -45,7 +49,7 @@ public class ElevatorMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha0))
+        if (btnManageScript.selectedAnimation == 0)
         {
             //Debug.Log("current: " + currentPos);
             moving = true;
@@ -53,14 +57,14 @@ public class ElevatorMovement : MonoBehaviour
 
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (btnManageScript.selectedAnimation == 1)
         {
            // Debug.Log("current: " + currentPos);
             moving = true;
             endPosUp = FirstFPos;
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (btnManageScript.selectedAnimation == 2)
         {
             //Debug.Log("current: " + currentPos);
             moving = true;
@@ -91,6 +95,10 @@ public class ElevatorMovement : MonoBehaviour
         if (currentPos == endPosUp)
         {
             slideTime = 1;
+            if (btnManageScript.selectedBtn != null)
+            {
+                btnManageScript.DeactivateBtn(btnManageScript.selectedBtn);
+            }            
             return false;
         }
         /*else if (slideTime < 0)
