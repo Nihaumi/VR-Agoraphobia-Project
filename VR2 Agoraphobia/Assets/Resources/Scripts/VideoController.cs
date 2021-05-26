@@ -27,14 +27,14 @@ public class VideoController : MonoBehaviour
             {
                 video.Pause();
                 isPlaying = false;                
-                Debug.Log("pause");
+                //Debug.Log("pause");
                 return;
             }
             else if (isPlaying == false)
             {
                 video.Play();
                 isPlaying = true;
-                Debug.Log("play");
+              //  Debug.Log("play");
                 return;
             }
 
@@ -43,12 +43,12 @@ public class VideoController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             video.playbackSpeed += 0.1f;
-            Debug.Log("faster");
+            //Debug.Log("faster");
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             video.playbackSpeed -= 0.1f;
-            Debug.Log("slower");
+          //  Debug.Log("slower");
         }
 
         //restart
@@ -65,13 +65,13 @@ public class VideoController : MonoBehaviour
     void Rewind()
     {
         video.frame = 0;
-        Debug.Log("rewind");
+        //Debug.Log("rewind");
     }
 
     void FastForward()
     {
         video.frame += 5*60;
-        Debug.Log("skip");
+        //Debug.Log("skip");
     }
 
 }

@@ -29,8 +29,8 @@ public class DoorSlide : MonoBehaviour
 
         startPosR = doorRight.transform.position.z;
         endPosR = startPosR + 2;
-        Debug.Log("start:" + startPosL);
-        Debug.Log("End:" + endPosL);
+        //Debug.Log("start:" + startPosL);
+        //Debug.Log("End:" + endPosL);
         
     }
 
@@ -43,7 +43,7 @@ public class DoorSlide : MonoBehaviour
             sliding = true;
             
             isOpen = !isOpen;
-            Debug.Log(isOpen);
+           // Debug.Log(isOpen);
             
           
         }

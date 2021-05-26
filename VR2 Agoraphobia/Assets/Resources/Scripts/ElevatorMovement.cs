@@ -37,8 +37,8 @@ public class ElevatorMovement : MonoBehaviour
         SecondFPos = SecondF.transform.position.y;
         endPosDown = 0;
         endPosUp = 0;
-        Debug.Log("start:" + groundFPos);
-        Debug.Log("End:" + endPosDown);
+        //Debug.Log("start:" + groundFPos);
+        //Debug.Log("End:" + endPosDown);
 
     }
 
@@ -47,7 +47,7 @@ public class ElevatorMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            Debug.Log("current: " + currentPos);
+            //Debug.Log("current: " + currentPos);
             moving = true;
             endPosUp = groundFPos;
 
@@ -55,14 +55,14 @@ public class ElevatorMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Debug.Log("current: " + currentPos);
+           // Debug.Log("current: " + currentPos);
             moving = true;
             endPosUp = FirstFPos;
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            Debug.Log("current: " + currentPos);
+            //Debug.Log("current: " + currentPos);
             moving = true;
             endPosUp = SecondFPos;
         }
@@ -83,7 +83,7 @@ public class ElevatorMovement : MonoBehaviour
         //elevator.transform.position = new Vector3(elevator.transform.position.x, Mathf.Lerp(currentPos, endPosUp, slideTime), elevator.transform.position.z);
         elevator.transform.position = Vector3.MoveTowards(elevator.transform.position, new Vector3(0,endPosUp,0), speed*Time.deltaTime);
 
-        Debug.Log("goal: " + endPosUp);
+        //Debug.Log("goal: " + endPosUp);
         //slideTime = [0..1]
         //slideTime += speed * t * Time.deltaTime;
 
