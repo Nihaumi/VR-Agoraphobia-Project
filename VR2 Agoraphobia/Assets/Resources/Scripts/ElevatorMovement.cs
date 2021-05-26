@@ -71,7 +71,7 @@ public class ElevatorMovement : MonoBehaviour
             endPosUp = SecondFPos;
         }
 
-        if (Input.GetKeyDown(KeyCode.C))
+        if (btnManageScript.selectedAnimation == 10)
         {
             moving = !moving;
         }
@@ -97,6 +97,7 @@ public class ElevatorMovement : MonoBehaviour
             slideTime = 1;
             if (btnManageScript.selectedBtn != null)
             {
+                Debug.Log("animationend");
                 btnManageScript.DeactivateBtn(btnManageScript.selectedBtn);
             }            
             return false;

@@ -20,9 +20,16 @@ public class DoorSlide : MonoBehaviour
     public float startPosR;
     public float endPosR;
 
+    //Button Manager scipt
+    GameObject ManagerOfButtons;
+    ButtonManager btnManageScript;
+
     // Start is called before the first frame update
     void Start()
     {
+        ManagerOfButtons = GameObject.Find("ButtonManager");
+        btnManageScript = ManagerOfButtons.GetComponent<ButtonManager>();
+
         isOpen = false;
         startPosL = doorLeft.transform.position.z;
         endPosL = startPosL - 2;
@@ -37,16 +44,15 @@ public class DoorSlide : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || btnManageScript.callSlide)
         {
-
+            Debug.Log("ifspace/callslide");
+            btnManageScript.callSlide = false;
             sliding = true;
-            
             isOpen = !isOpen;
-           // Debug.Log(isOpen);
-            
-          
+            Debug.Log(isOpen);            
         }
+
         if (Input.GetKeyDown(KeyCode.X))
         {
             sliding = !sliding;
@@ -54,6 +60,7 @@ public class DoorSlide : MonoBehaviour
 
         if (sliding)
         {
+            Debug.Log("enter sliding");
             sliding = ToggleDoor();
         }
 
@@ -62,6 +69,7 @@ public class DoorSlide : MonoBehaviour
 
     public bool ToggleDoor()
     {
+        Debug.Log("toggleDoor");
         int direction = 1;
         if (isOpen == false)
         {
