@@ -1619,8 +1619,8 @@ MonoBehaviour:
   btnLvl_0: {fileID: 0}
   btnLvl_1: {fileID: 0}
   btnLvl_2: {fileID: 0}
-  btnDoorToggle: {fileID: 0}
-  btnDoorStop: {fileID: 0}
+  btnOpenDoor: {fileID: 0}
+  btnCloseDoor: {fileID: 0}
   btnStop: {fileID: 0}
   indexFinger_R: {fileID: 0}
   finishedAnimation: 0
@@ -1628,12 +1628,6 @@ MonoBehaviour:
   selectedAnimation: 0
   selectedBtn: {fileID: 0}
   touchDist: 0.15
-  dist_0: 0
-  dist_1: 0
-  dist_2: 0
-  dist_DoorStop: 0
-  dist_DoorToggle: 0
-  dist_Stop: 0
   callSlide: 0
 --- !u!4 &1616120407
 Transform:
@@ -2155,6 +2149,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -0.6099999
       objectReference: {fileID: 0}
+    - target: {fileID: 5684820006483072472, guid: 27c5ff248a2145a43b0a444ecb1018a1, type: 3}
+      propertyPath: m_Name
+      value: openDoor
+      objectReference: {fileID: 0}
     - target: {fileID: 5795059594485488681, guid: 27c5ff248a2145a43b0a444ecb1018a1, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.11562997
@@ -2178,6 +2176,10 @@ PrefabInstance:
     - target: {fileID: 6304052752766296093, guid: 27c5ff248a2145a43b0a444ecb1018a1, type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 6681322584982962690, guid: 27c5ff248a2145a43b0a444ecb1018a1, type: 3}
+      propertyPath: m_Name
+      value: closeDoor
       objectReference: {fileID: 0}
     - target: {fileID: 7165611126208967305, guid: 27c5ff248a2145a43b0a444ecb1018a1, type: 3}
       propertyPath: m_Materials.Array.data[0]

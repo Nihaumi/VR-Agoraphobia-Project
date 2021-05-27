@@ -38,7 +38,7 @@ public class DoorSlide : MonoBehaviour
         endPosR = startPosR + 2;
         //Debug.Log("start:" + startPosL);
         //Debug.Log("End:" + endPosL);
-        
+
     }
 
     // Update is called once per frame
@@ -72,7 +72,7 @@ public class DoorSlide : MonoBehaviour
         doorRight.transform.position = new Vector3(doorRight.transform.position.x, doorRight.transform.position.y, Mathf.Lerp(startPosR, endPosR, slideTime));
         //slideTime = [0..1]
 
-       int direction = 1;
+        int direction = 1;
         if (isOpen == false)
         {
             direction = -1;

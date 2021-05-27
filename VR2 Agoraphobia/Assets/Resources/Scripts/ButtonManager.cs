@@ -8,8 +8,8 @@ public class ButtonManager : MonoBehaviour
     public GameObject btnLvl_0;
     public GameObject btnLvl_1;
     public GameObject btnLvl_2;
-    public GameObject btnDoorToggle;
-    public GameObject btnDoorStop;
+    public GameObject btnOpenDoor;
+    public GameObject btnCloseDoor;
     public GameObject btnStop;
 
     Color color_btnInactive = new Color32(255, 240, 237, 255);
@@ -18,6 +18,7 @@ public class ButtonManager : MonoBehaviour
 
     //index finger of Player
     public GameObject indexFinger_R;
+    public GameObject indexFinger_L;
 
     //to check if one button is active and if animation is done
     public bool finishedAnimation;
@@ -27,12 +28,12 @@ public class ButtonManager : MonoBehaviour
     public int selectedAnimation;
     public GameObject selectedBtn;
 
-    //distances for buttons and finger
+    //distance for buttons and finger
     public float touchDist = 0.15f;
 
     //slide script
-    GameObject DoorSlider;
-    DoorSlide doorSlide;
+    GameObject DoorSliderObj;
+    DoorSlide doorSlideScript;
     public bool callSlide = false;
 
     //elevator movement script 
@@ -44,8 +45,8 @@ public class ButtonManager : MonoBehaviour
     void Start()
     {
         //door sliding access
-        DoorSlider = GameObject.Find("Doors");
-        doorSlide = DoorSlider.GetComponent<DoorSlide>();
+        DoorSliderObj = GameObject.Find("Doors");
+        doorSlideScript = DoorSliderObj.GetComponent<DoorSlide>();
 
         //elevMovement obj, script
         ElevatorMovement = GameObject.Find("elevator");
@@ -55,12 +56,13 @@ public class ButtonManager : MonoBehaviour
         btnLvl_0 = GameObject.Find("0");
         btnLvl_1 = GameObject.Find("1");
         btnLvl_2 = GameObject.Find("2");
-        btnDoorToggle = GameObject.Find("door");
-        btnDoorStop = GameObject.Find("stopp door");
+        btnOpenDoor = GameObject.Find("openDoor");
+        btnCloseDoor = GameObject.Find("closeDoor");
         btnStop = GameObject.Find("stop");
 
         indexFinger_R = GameObject.Find("b_r_index3");
         Debug.Assert(indexFinger_R != null);
+        indexFinger_L = GameObject.Find("b_l_index3");
 
         btnIsActive = false;
         finishedAnimation = true;
@@ -77,44 +79,85 @@ public class ButtonManager : MonoBehaviour
         }
     }
 
-    void UpdateSelectedButton() {
+    void UpdateSelectedButton()
+    {
+        bool button_0_was_touched = false;
+        bool button_1_was_touched = false;
+        bool button_2_was_touched = false;
+        bool button_stop_was_touched = false;
+        bool button_doorOpen_was_touched = false;
+        bool button_doorClose_was_touched = false;
         //check distances between buttons and finger
         Debug.Log("finger found");
-        bool button_0_was_touched = Vector3.Distance(indexFinger_R.transform.position, btnLvl_0.transform.position) < touchDist;
-        float dist_1 = Vector3.Distance(indexFinger_R.transform.position, btnLvl_1.transform.position);
-        float dist_2 = Vector3.Distance(indexFinger_R.transform.position, btnLvl_2.transform.position);
-        float dist_DoorToggle = Vector3.Distance(indexFinger_R.transform.position, btnDoorToggle.transform.position);
-        float dist_DoorStop = Vector3.Distance(indexFinger_R.transform.position, btnDoorStop.transform.position);
-        float dist_Stop = Vector3.Distance(indexFinger_R.transform.position, btnStop.transform.position);
+        //bool button_0_was_touched = (Vector3.Distance(indexFinger_R.transform.position, btnLvl_0.transform.position) < touchDist);
+        if ((Vector3.Distance(indexFinger_R.transform.position, btnLvl_0.transform.position) < touchDist) || (Vector3.Distance(indexFinger_L.transform.position, btnLvl_0.transform.position) < touchDist))
+        {
+            button_0_was_touched = true;
+        }
+        if (Vector3.Distance(indexFinger_R.transform.position, btnLvl_1.transform.position) < touchDist || Vector3.Distance(indexFinger_L.transform.position, btnLvl_1.transform.position) < touchDist)
+        {
+            button_1_was_touched = true;
+        }
+        if (Vector3.Distance(indexFinger_R.transform.position, btnLvl_2.transform.position) < touchDist || Vector3.Distance(indexFinger_L.transform.position, btnLvl_2.transform.position) < touchDist)
+        {
+            button_2_was_touched = true;
+        }
+        if (Vector3.Distance(indexFinger_R.transform.position, btnOpenDoor.transform.position) < touchDist || Vector3.Distance(indexFinger_L.transform.position, btnOpenDoor.transform.position) < touchDist)
+        {
+            button_doorOpen_was_touched = true;
+        }
+        if (Vector3.Distance(indexFinger_R.transform.position, btnCloseDoor.transform.position) < touchDist || Vector3.Distance(indexFinger_L.transform.position, btnCloseDoor.transform.position) < touchDist)
+        {
+            button_doorClose_was_touched = true;
+        }
+        if (Vector3.Distance(indexFinger_R.transform.position, btnStop.transform.position) < touchDist || Vector3.Distance(indexFinger_L.transform.position, btnStop.transform.position) < touchDist)
+        {
+            button_stop_was_touched = true;
+        }
 
-        if (dist_Stop < touchDist)
+        if (button_stop_was_touched)
         {
             Debug.Log("stopp");
             btnStop.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
             elevMovement.stopMoving();
-        }   
+        }
 
         //check if no btn is active and animations are finished and which button has been "touched"
         if (!finishedAnimation || btnIsActive)
             return;
-      
+
         if (button_0_was_touched)
         {
             Debug.Log("touch");
             selectedBtn = btnLvl_0;
             selectedAnimation = 0;
         }
-        if (dist_1 < touchDist)
+        if (button_1_was_touched)
         {
             Debug.Log("touch");
             selectedBtn = btnLvl_1;
             selectedAnimation = 1;
         }
-        if (dist_2 < touchDist)
+        if (button_2_was_touched)
         {
             Debug.Log("touch");
             selectedBtn = btnLvl_2;
             selectedAnimation = 2;
+        }
+        //close door
+        //wait for door to be closed
+        if (button_doorClose_was_touched)
+        {
+            selectedBtn = btnCloseDoor;
+            doorSlideScript.CloseDoor();
+
+        }
+
+        if (button_doorOpen_was_touched)
+        {
+            selectedBtn = btnOpenDoor;
+            doorSlideScript.OpenDoor();
+
         }
     }
 
@@ -123,14 +166,14 @@ public class ButtonManager : MonoBehaviour
         btn.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
 
         // check if door open
-        if (doorSlide.isOpen)
+        if (doorSlideScript.isOpen)
         {
             // close if necessary
-            doorSlide.CloseDoor();
+            doorSlideScript.CloseDoor();
         }
 
         // wait for it to be closed
-        if (!doorSlide.doorsAreMoving)
+        if (!doorSlideScript.doorsAreMoving)
         {
             elevMovement.startMoving();
         }
@@ -160,15 +203,13 @@ public class ButtonManager : MonoBehaviour
         }
         yield return new WaitForSeconds(1);
 
-        Debug.Log("call auf true");
-        
-        if (! btn.name.Equals("stop"))
+        if (!btn.name.Equals("stop"))
         {
-            doorSlide.OpenDoor();
+            doorSlideScript.OpenDoor();
         }
 
         finishedAnimation = true;
         btnIsActive = false;
     }
-    
+
 }
