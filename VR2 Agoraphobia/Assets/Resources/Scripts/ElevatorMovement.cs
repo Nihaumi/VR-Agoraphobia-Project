@@ -49,40 +49,44 @@ public class ElevatorMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (moving)
+        {
+            moving = UpdateElevatorPosition();
+        }
+    }
+
+    public void startMoving()
+    {
+        moving = true;
+
+        // figure out which level to go to
         if (btnManageScript.selectedAnimation == 0)
         {
             //Debug.Log("current: " + currentPos);
-            moving = true;
             endPosUp = groundFPos;
 
         }
 
         if (btnManageScript.selectedAnimation == 1)
         {
-           // Debug.Log("current: " + currentPos);
-            moving = true;
+            // Debug.Log("current: " + currentPos);
             endPosUp = FirstFPos;
         }
 
         if (btnManageScript.selectedAnimation == 2)
         {
             //Debug.Log("current: " + currentPos);
-            moving = true;
             endPosUp = SecondFPos;
-        }
-
-        if (btnManageScript.selectedAnimation == 10)
-        {
-            moving = !moving;
-        }
-
-        if (moving)
-        {
-            moving = ToggleElev();
         }
     }
 
-    public bool ToggleElev()
+    public void stopMoving()
+    {
+        Debug.Log("stopMoving");
+        moving = false;
+    }
+
+    public bool UpdateElevatorPosition()
     {
         //elevator.transform.position = new Vector3(elevator.transform.position.x, Mathf.Lerp(currentPos, endPosUp, slideTime), elevator.transform.position.z);
         elevator.transform.position = Vector3.MoveTowards(elevator.transform.position, new Vector3(0,endPosUp,0), speed*Time.deltaTime);

@@ -29,17 +29,15 @@ public class ButtonManager : MonoBehaviour
 
     //distances for buttons and finger
     public float touchDist = 0.15f;
-    public float dist_0;
-    public float dist_1;
-    public float dist_2;
-    public float dist_DoorStop;
-    public float dist_DoorToggle;
-    public float dist_Stop;
 
     //slide script
     GameObject DoorSlider;
     DoorSlide doorSlide;
     public bool callSlide = false;
+
+    //elevator movement script 
+    GameObject ElevatorMovement;
+    ElevatorMovement elevMovement;
 
 
     // Start is called before the first frame update
@@ -48,6 +46,10 @@ public class ButtonManager : MonoBehaviour
         //door sliding access
         DoorSlider = GameObject.Find("Doors");
         doorSlide = DoorSlider.GetComponent<DoorSlide>();
+
+        //elevMovement obj, script
+        ElevatorMovement = GameObject.Find("elevator");
+        elevMovement = ElevatorMovement.GetComponent<ElevatorMovement>();
 
         //get objects
         btnLvl_0 = GameObject.Find("0");
@@ -58,6 +60,7 @@ public class ButtonManager : MonoBehaviour
         btnStop = GameObject.Find("stop");
 
         indexFinger_R = GameObject.Find("b_r_index3");
+        Debug.Assert(indexFinger_R != null);
 
         btnIsActive = false;
         finishedAnimation = true;
@@ -66,67 +69,78 @@ public class ButtonManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!indexFinger_R)
+        UpdateSelectedButton();
+
+        if (selectedBtn != null)
         {
-            indexFinger_R = GameObject.Find("b_r_index3");
+            ActivateBtn(selectedBtn);
         }
-        if (indexFinger_R)
-        {
-            //check distances between buttons and finger
-            Debug.Log("finger found");
-            dist_0 = Vector3.Distance(indexFinger_R.transform.position, btnLvl_0.transform.position);
-            dist_1 = Vector3.Distance(indexFinger_R.transform.position, btnLvl_1.transform.position);
-            dist_2 = Vector3.Distance(indexFinger_R.transform.position, btnLvl_2.transform.position);
-            dist_DoorToggle = Vector3.Distance(indexFinger_R.transform.position, btnDoorToggle.transform.position);
-            dist_DoorStop = Vector3.Distance(indexFinger_R.transform.position, btnDoorStop.transform.position);
-            dist_Stop = Vector3.Distance(indexFinger_R.transform.position, btnStop.transform.position);
-
-            //check if no btn is active and animations are finished and which button has been "touched"
-            if (finishedAnimation && !btnIsActive)
-            {
-                if(dist_0 < touchDist)
-                {
-                    Debug.Log("touch");
-                    selectedBtn = btnLvl_0;
-                    selectedAnimation = 0;
-                }
-                if (dist_1 < touchDist)
-                {
-                    Debug.Log("touch");
-                    selectedBtn = btnLvl_1;
-                    selectedAnimation = 1;
-                }
-                if (dist_2 < touchDist)
-                {
-                    Debug.Log("touch");
-                    selectedBtn = btnLvl_2;
-                    selectedAnimation = 2;
-                }
-
-                if(dist_Stop < touchDist)
-                {
-                    selectedBtn = btnStop;
-                    selectedAnimation = 10;
-                }
-
-                if (selectedBtn != null)
-                {
-                    ActivateBtn(selectedBtn);
-                }
-
-            }
-            
-        }        
     }
+
+    void UpdateSelectedButton() {
+        //check distances between buttons and finger
+        Debug.Log("finger found");
+        bool button_0_was_touched = Vector3.Distance(indexFinger_R.transform.position, btnLvl_0.transform.position) < touchDist;
+        float dist_1 = Vector3.Distance(indexFinger_R.transform.position, btnLvl_1.transform.position);
+        float dist_2 = Vector3.Distance(indexFinger_R.transform.position, btnLvl_2.transform.position);
+        float dist_DoorToggle = Vector3.Distance(indexFinger_R.transform.position, btnDoorToggle.transform.position);
+        float dist_DoorStop = Vector3.Distance(indexFinger_R.transform.position, btnDoorStop.transform.position);
+        float dist_Stop = Vector3.Distance(indexFinger_R.transform.position, btnStop.transform.position);
+
+        //check if no btn is active and animations are finished and which button has been "touched"
+        if (!finishedAnimation || btnIsActive)
+            return;
+      
+        if (button_0_was_touched)
+        {
+            Debug.Log("touch");
+            selectedBtn = btnLvl_0;
+            selectedAnimation = 0;
+        }
+        if (dist_1 < touchDist)
+        {
+            Debug.Log("touch");
+            selectedBtn = btnLvl_1;
+            selectedAnimation = 1;
+        }
+        if (dist_2 < touchDist)
+        {
+            Debug.Log("touch");
+            selectedBtn = btnLvl_2;
+            selectedAnimation = 2;
+        }
+
+        if (dist_Stop < touchDist)
+        {
+            selectedBtn = btnStop;
+            selectedAnimation = 10;
+        }   
+    }
+
     void ActivateBtn(GameObject btn)
     {
-        if(btn.name == "stop")
+        if(btn.name.Equals("stop"))
         {
-            btn.GetComponent<Renderer>().material.SetColor("_Color", color_btnStopactive);
+            Debug.Log("stopp");
+            btn.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+            elevMovement.stopMoving();
         }
         else
         {
             btn.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
+
+            // check if door open
+            if (doorSlide.isOpen)
+            {
+                // close if necessary
+                doorSlide.CloseDoor();
+            }
+
+            // wait for it to be closed
+            if (!doorSlide.doorsAreMoving)
+            {
+                elevMovement.startMoving();
+            }
         }
         finishedAnimation = false;
         btnIsActive = true;
@@ -142,7 +156,7 @@ public class ButtonManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
 
-        if (btn.name == "stop")
+        if (btn.name.Equals("stop"))
         {
             btn.GetComponent<Renderer>().material.SetColor("_Color", color_btnStopinactive);
         }
@@ -152,8 +166,14 @@ public class ButtonManager : MonoBehaviour
             btn.GetComponent<Renderer>().material.SetColor("_Color", color_btnInactive);
         }
         yield return new WaitForSeconds(1);
+
         Debug.Log("call auf true");
-        callSlide = true;
+        
+        if (btn.name != "stop")
+        {
+            doorSlide.OpenDoor();
+        }
+
         finishedAnimation = true;
         btnIsActive = false;
     }
