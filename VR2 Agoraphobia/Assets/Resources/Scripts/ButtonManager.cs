@@ -87,6 +87,13 @@ public class ButtonManager : MonoBehaviour
         float dist_DoorStop = Vector3.Distance(indexFinger_R.transform.position, btnDoorStop.transform.position);
         float dist_Stop = Vector3.Distance(indexFinger_R.transform.position, btnStop.transform.position);
 
+        if (dist_Stop < touchDist)
+        {
+            Debug.Log("stopp");
+            btnStop.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+            elevMovement.stopMoving();
+        }   
+
         //check if no btn is active and animations are finished and which button has been "touched"
         if (!finishedAnimation || btnIsActive)
             return;
@@ -109,39 +116,25 @@ public class ButtonManager : MonoBehaviour
             selectedBtn = btnLvl_2;
             selectedAnimation = 2;
         }
-
-        if (dist_Stop < touchDist)
-        {
-            selectedBtn = btnStop;
-            selectedAnimation = 10;
-        }   
     }
 
     void ActivateBtn(GameObject btn)
     {
-        if(btn.name.Equals("stop"))
-        {
-            Debug.Log("stopp");
-            btn.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
-            elevMovement.stopMoving();
-        }
-        else
-        {
-            btn.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
+        btn.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
 
-            // check if door open
-            if (doorSlide.isOpen)
-            {
-                // close if necessary
-                doorSlide.CloseDoor();
-            }
-
-            // wait for it to be closed
-            if (!doorSlide.doorsAreMoving)
-            {
-                elevMovement.startMoving();
-            }
+        // check if door open
+        if (doorSlide.isOpen)
+        {
+            // close if necessary
+            doorSlide.CloseDoor();
         }
+
+        // wait for it to be closed
+        if (!doorSlide.doorsAreMoving)
+        {
+            elevMovement.startMoving();
+        }
+
         finishedAnimation = false;
         btnIsActive = true;
     }
@@ -169,7 +162,7 @@ public class ButtonManager : MonoBehaviour
 
         Debug.Log("call auf true");
         
-        if (btn.name != "stop")
+        if (! btn.name.Equals("stop"))
         {
             doorSlide.OpenDoor();
         }

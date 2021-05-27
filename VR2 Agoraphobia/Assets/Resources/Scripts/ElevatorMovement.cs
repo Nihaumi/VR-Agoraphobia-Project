@@ -84,6 +84,12 @@ public class ElevatorMovement : MonoBehaviour
     {
         Debug.Log("stopMoving");
         moving = false;
+
+        if (btnManageScript.selectedBtn != null)
+        {
+            Debug.Log("animationend");
+            btnManageScript.DeactivateBtn(btnManageScript.selectedBtn);
+        }     
     }
 
     public bool UpdateElevatorPosition()
@@ -98,12 +104,8 @@ public class ElevatorMovement : MonoBehaviour
         currentPos = elevator.transform.position.y;
         if (currentPos == endPosUp)
         {
-            slideTime = 1;
-            if (btnManageScript.selectedBtn != null)
-            {
-                Debug.Log("animationend");
-                btnManageScript.DeactivateBtn(btnManageScript.selectedBtn);
-            }            
+            slideTime = 1;       
+            stopMoving();
             return false;
         }
         /*else if (slideTime < 0)
