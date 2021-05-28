@@ -187,7 +187,7 @@ public class ButtonManager : MonoBehaviour
     {
         stopIsActive = true;
 
-        if (!selectedBtn.name.Equals("stop"))
+        if (selectedBtn && !selectedBtn.name.Equals("stop"))
         {
             selectedBtn.GetComponent<Renderer>().material.SetColor("_Color", color_btnInactive);
         }
@@ -249,7 +249,7 @@ public class ButtonManager : MonoBehaviour
         }
         yield return new WaitForSeconds(1);
 
-        if (!btn.name.Equals("stop") && !btn.name.Equals("openDoor") && !btn.name.Equals("closeDoor"))
+        if (!btn.name.Equals("stop") && !btn.name.Equals("openDoor") && !btn.name.Equals("closeDoor") && !stopIsActive)
         {
             doorSlideScript.OpenDoor();
         }
