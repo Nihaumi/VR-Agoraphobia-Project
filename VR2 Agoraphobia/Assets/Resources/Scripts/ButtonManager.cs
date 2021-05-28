@@ -8,6 +8,9 @@ public class ButtonManager : MonoBehaviour
     public GameObject btnLvl_0;
     public GameObject btnLvl_1;
     public GameObject btnLvl_2;
+
+    public List<GameObject> navButtons;
+    
     public GameObject btnOpenDoor;
     public GameObject btnCloseDoor;
     public GameObject btnStop;
@@ -59,6 +62,12 @@ public class ButtonManager : MonoBehaviour
         btnLvl_0 = GameObject.Find("0");
         btnLvl_1 = GameObject.Find("1");
         btnLvl_2 = GameObject.Find("2");
+
+        navButtons = new List<GameObject>();
+        navButtons.Add(btnLvl_0);
+        navButtons.Add(btnLvl_1);
+        navButtons.Add(btnLvl_2);
+
         btnOpenDoor = GameObject.Find("openDoor");
         btnCloseDoor = GameObject.Find("closeDoor");
         btnStop = GameObject.Find("stop");
@@ -202,14 +211,14 @@ public class ButtonManager : MonoBehaviour
         btn.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
 
         //wenn stop button aktiv dann stopp button deaktivieren FALLS es ein floor btn ist, bei door open/close bleibt stop active
-        if(stopIsActive && !btn.name.Equals("openDoor") && !btn.name.Equals("closeDoor"))
+        if(this.navButtons.Contains(btn) && stopIsActive)
         {
             btnStop.GetComponent<Renderer>().material.SetColor("_Color", color_btnStopinactive);
             stopIsActive = false;
         }
 
         // check if door open
-        if (doorSlideScript.isOpen && !btn.name.Equals("openDoor") && !btn.name.Equals("closeDoor"))
+        if (this.navButtons.Contains(btn) && doorSlideScript.isOpen)
         {
             // close if necessary
             doorSlideScript.CloseDoor();
@@ -249,7 +258,7 @@ public class ButtonManager : MonoBehaviour
         }
         yield return new WaitForSeconds(1);
 
-        if (!btn.name.Equals("stop") && !btn.name.Equals("openDoor") && !btn.name.Equals("closeDoor") && !stopIsActive)
+        if (this.navButtons.Contains(btn) && !stopIsActive)
         {
             doorSlideScript.OpenDoor();
         }
