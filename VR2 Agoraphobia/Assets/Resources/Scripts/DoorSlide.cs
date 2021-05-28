@@ -84,12 +84,14 @@ public class DoorSlide : MonoBehaviour
         {
             slideTime = 1;
             doorsAreMoving = false;
+            btnManageScript.DeactivateBtn(btnManageScript.btnOpenDoor);
             return false;
         }
         else if (slideTime < 0)
         {
             slideTime = 0;
             doorsAreMoving = false;
+            btnManageScript.DeactivateBtn(btnManageScript.btnCloseDoor);
             return false;
         }
         return true;
