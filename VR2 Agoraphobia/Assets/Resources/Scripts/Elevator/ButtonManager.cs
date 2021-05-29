@@ -19,10 +19,6 @@ public class ButtonManager : MonoBehaviour
     Color color_btnStopinactive = new Color32(219, 63, 59, 255);
     Color color_btnStopactive = new Color32(255, 7, 0, 255);
 
-    //index finger of Player
-    public GameObject indexFinger_R;
-    public GameObject indexFinger_L;
-
     //to check if one button is active and if animation is done
     public bool finishedAnimation;
     public bool btnIsActive;
@@ -36,6 +32,10 @@ public class ButtonManager : MonoBehaviour
 
     //distance for buttons and finger
     public float touchDist = 0.15f;
+
+    //findfinger script
+    public GameObject FingerManager;
+    public FindFinger find_index_Script;
 
     //slide script
     GameObject DoorSliderObj;
@@ -72,7 +72,9 @@ public class ButtonManager : MonoBehaviour
         btnCloseDoor = GameObject.Find("closeDoor");
         btnStop = GameObject.Find("stop");
 
-        FindFinger();
+        //find finger script
+        FingerManager = GameObject.Find("FingerManager");
+        find_index_Script = FingerManager.GetComponent<FindFinger>();
 
         btnIsActive = false;
         finishedAnimation = true;
@@ -82,23 +84,11 @@ public class ButtonManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        FindFinger();
         UpdateSelectedButton();
 
         if (selectedBtn != null)
         {
             ActivateBtn(selectedBtn);
-        }
-    }
-
-    void FindFinger()
-    {
-        if (indexFinger_L == null || indexFinger_R == null)
-        {
-            indexFinger_R = GameObject.Find("b_r_index3");
-            Debug.Assert(indexFinger_R != null, "no index R");
-            indexFinger_L = GameObject.Find("b_l_index3");
-            Debug.Assert(indexFinger_L != null, "ni index L");
         }
     }
 
@@ -114,27 +104,27 @@ public class ButtonManager : MonoBehaviour
         //float dist_0 = Vector3.Distance(indexFinger.transform.position, btnLvl_0.transform.position);
         //check distances between buttons and finger
         //bool button_0_was_touched = (Vector3.Distance(indexFinger_R.transform.position, btnLvl_0.transform.position) < touchDist);
-        if ((Vector3.Distance(indexFinger_R.transform.position, btnLvl_0.transform.position) < touchDist) || (Vector3.Distance(indexFinger_L.transform.position, btnLvl_0.transform.position) < touchDist))
+        if ((Vector3.Distance(find_index_Script.indexFinger_R.transform.position, btnLvl_0.transform.position) < touchDist) || (Vector3.Distance(find_index_Script.indexFinger_L.transform.position, btnLvl_0.transform.position) < touchDist))
         {
             button_0_was_touched = true;
         }
-        if (Vector3.Distance(indexFinger_R.transform.position, btnLvl_1.transform.position) < touchDist || Vector3.Distance(indexFinger_L.transform.position, btnLvl_1.transform.position) < touchDist)
+        if (Vector3.Distance(find_index_Script.indexFinger_R.transform.position, btnLvl_1.transform.position) < touchDist || Vector3.Distance(find_index_Script.indexFinger_L.transform.position, btnLvl_1.transform.position) < touchDist)
         {
             button_1_was_touched = true;
         }
-        if (Vector3.Distance(indexFinger_R.transform.position, btnLvl_2.transform.position) < touchDist || Vector3.Distance(indexFinger_L.transform.position, btnLvl_2.transform.position) < touchDist)
+        if (Vector3.Distance(find_index_Script.indexFinger_R.transform.position, btnLvl_2.transform.position) < touchDist || Vector3.Distance(find_index_Script.indexFinger_L.transform.position, btnLvl_2.transform.position) < touchDist)
         {
             button_2_was_touched = true;
         }
-        if (Vector3.Distance(indexFinger_R.transform.position, btnOpenDoor.transform.position) < touchDist || Vector3.Distance(indexFinger_L.transform.position, btnOpenDoor.transform.position) < touchDist)
+        if (Vector3.Distance(find_index_Script.indexFinger_R.transform.position, btnOpenDoor.transform.position) < touchDist || Vector3.Distance(find_index_Script.indexFinger_L.transform.position, btnOpenDoor.transform.position) < touchDist)
         {
             button_doorOpen_was_touched = true;
         }
-        if (Vector3.Distance(indexFinger_R.transform.position, btnCloseDoor.transform.position) < touchDist || Vector3.Distance(indexFinger_L.transform.position, btnCloseDoor.transform.position) < touchDist)
+        if (Vector3.Distance(find_index_Script.indexFinger_R.transform.position, btnCloseDoor.transform.position) < touchDist || Vector3.Distance(find_index_Script.indexFinger_L.transform.position, btnCloseDoor.transform.position) < touchDist)
         {
             button_doorClose_was_touched = true;
         }
-        if (Vector3.Distance(indexFinger_R.transform.position, btnStop.transform.position) < touchDist || Vector3.Distance(indexFinger_L.transform.position, btnStop.transform.position) < touchDist)
+        if (Vector3.Distance(find_index_Script.indexFinger_R.transform.position, btnStop.transform.position) < touchDist || Vector3.Distance(find_index_Script.indexFinger_L.transform.position, btnStop.transform.position) < touchDist)
         {
             button_stop_was_touched = true;
         }
