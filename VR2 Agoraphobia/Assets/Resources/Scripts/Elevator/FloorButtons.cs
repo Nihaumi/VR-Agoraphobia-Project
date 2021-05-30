@@ -20,6 +20,9 @@ public class FloorButtons : MonoBehaviour
         FingerManager = GameObject.Find("FingerManager");
         find_index_Script = FingerManager.GetComponent<FindFinger>();
 
+        elevator_movement_object = GameObject.Find("elevator");
+        elevator_movement_script = elevator_movement_object.GetComponent<ElevatorMovement>();
+
     }
 
     // Update is called once per frame
@@ -34,3 +37,4 @@ public class FloorButtons : MonoBehaviour
 // if elevator already on this floor change color, open door
 //if elevator not on this floor, tell elevator to move to this floor
 //chnage btn color
+

@@ -7,6 +7,8 @@ public class PlayerManager : MonoBehaviour
 
     public GameObject Player;
     public GameObject elevGround;
+    
+    public float touchDist = 3.0f;
 
     public GameObject elevatorMovementObject;
     public ElevatorMovement elevatorMovementScript;
@@ -19,13 +21,20 @@ public class PlayerManager : MonoBehaviour
         elevatorMovementObject = GameObject.Find("elevator");
         elevatorMovementScript = elevatorMovementObject.GetComponent<ElevatorMovement>();
     }
-
+    
     // Update is called once per frame
     void Update()
-    {
-        if(elevatorMovementScript.moving == true)
+    {   
+        Debug.Log("is you moving? " + elevatorMovementScript.moving);
+        if(elevatorMovementScript.moving == true && Vector3.Distance(Player.transform.position, elevGround.transform.position) < touchDist)
         {
+            Debug.Log("Player adopted");
             Player.transform.parent = elevGround.transform;
+        }
+        else
+        {
+            Debug.Log("Player orphaned");
+            Player.transform.parent = null;
         }
     }
 }

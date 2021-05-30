@@ -25,7 +25,7 @@ public class FindFinger : MonoBehaviour
             indexFinger_R = GameObject.Find("b_r_index3");
             Debug.Assert(indexFinger_R != null, "no index R");
             indexFinger_L = GameObject.Find("b_l_index3");
-            Debug.Assert(indexFinger_L != null, "ni index L");
+            Debug.Assert(indexFinger_L != null, "no index L");
         }
     }
 }
