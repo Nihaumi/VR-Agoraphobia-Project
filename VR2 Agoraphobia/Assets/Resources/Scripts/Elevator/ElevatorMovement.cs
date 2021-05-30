@@ -27,6 +27,9 @@ public class ElevatorMovement : MonoBehaviour
     GameObject ManagerOfButtons;
     ButtonManager btnManageScript;
 
+    public int last_reached_floor = 0;
+    public int last_selected_floor = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,19 +49,31 @@ public class ElevatorMovement : MonoBehaviour
 
     }
 
+
+//  lr  ls 
+//  0   0   
+//  0   1
+//  0   2
     // Update is called once per frame
     void Update()
     {
         if (moving)
         {
             moving = UpdateElevatorPosition();
+            if(!moving){
+                last_reached_floor = last_selected_floor;
+                Debug.Log("last selected: " + last_selected_floor);
+                Debug.Log("last reached: " + last_reached_floor);
+            }
         }
     }
 
     public void startMoving()
     {
         moving = true;
-
+        Debug.Log("last selected(starting): " + last_selected_floor);
+        last_selected_floor = btnManageScript.selectedAnimation;
+        last_reached_floor = -1000;
         // figure out which level to go to
         if (btnManageScript.selectedAnimation == 0)
         {

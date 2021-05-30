@@ -243,6 +243,7 @@ public class ButtonManager : MonoBehaviour
         elevMovement.stopMoving();
     }
 
+
     void ActivateBtn(GameObject btn)
     {
         Debug.Log("activate");
@@ -256,17 +257,18 @@ public class ButtonManager : MonoBehaviour
         }
 
         // check if door open
-        if (this.navButtons.Contains(btn) && doorSlideScript.isOpen)
+        if (this.navButtons.Contains(btn) && doorSlideScript.isOpen && selectedAnimation != elevMovement.last_reached_floor)
         {
             // close if necessary
             doorSlideScript.CloseDoor();
         }
-
+        
         // wait for it to be closed
         if (!doorSlideScript.doorsAreMoving)
         {
             elevMovement.startMoving();
         }
+        
 
         finishedAnimation = false;
         btnIsActive = true;
@@ -292,6 +294,10 @@ public class ButtonManager : MonoBehaviour
         if (!btn.name.Equals("stop"))
         {
             Debug.Log("inactive btn color for: " + btn);
+            //if(selectedAnimation == elevMovement.last_reached_floor) //for some reason doesn't work. 
+            {
+                yield return new WaitForSeconds(1);
+            }
             btn.GetComponent<Renderer>().material.SetColor("_Color", color_btnInactive);
         }
         yield return new WaitForSeconds(1);
