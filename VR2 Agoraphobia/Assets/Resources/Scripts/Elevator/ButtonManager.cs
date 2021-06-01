@@ -20,10 +20,10 @@ public class ButtonManager : MonoBehaviour
     public GameObject btn_floor_1;
     public GameObject btn_floor_2;
 
-    Color color_btnInactive = new Color32(255, 240, 237, 255);
-    Color color_btnStopinactive = new Color32(219, 63, 59, 255);
-    Color color_btnStopactive = new Color32(255, 7, 0, 255);
-
+    //Colormanager
+    GameObject ColorManager_obj;
+    ColorManager ColorManager_script;
+ 
     //to check if one button is active and if animation is done
     public bool finishedAnimation;
     public bool btnIsActive;
@@ -51,7 +51,7 @@ public class ButtonManager : MonoBehaviour
     GameObject ElevatorMovement;
     ElevatorMovement elevMovement;
 
-
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -62,6 +62,10 @@ public class ButtonManager : MonoBehaviour
         //elevMovement obj, script
         ElevatorMovement = GameObject.Find("elevator");
         elevMovement = ElevatorMovement.GetComponent<ElevatorMovement>();
+
+        //Colormanager obj, script
+        ColorManager_obj = GameObject.Find("ColorManager");
+        ColorManager_script = ColorManager_obj.GetComponent<ColorManager>();
 
         //get objects
         btnLvl_0 = GameObject.Find("0");
@@ -236,10 +240,10 @@ public class ButtonManager : MonoBehaviour
 
         if (selectedBtn && !selectedBtn.name.Equals("stop"))
         {
-            selectedBtn.GetComponent<Renderer>().material.SetColor("_Color", color_btnInactive);
+            selectedBtn.GetComponent<Renderer>().material.SetColor("_Color", ColorManager_script.color_btnInactive);
         }
 
-        btnStop.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+        btnStop.GetComponent<Renderer>().material.SetColor("_Color", ColorManager_script.color_btnStopactive);
         elevMovement.stopMoving();
     }
 
@@ -247,12 +251,12 @@ public class ButtonManager : MonoBehaviour
     void ActivateBtn(GameObject btn)
     {
         Debug.Log("activate");
-        btn.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
+        btn.GetComponent<Renderer>().material.SetColor("_Color", ColorManager_script.color_btnActive);
 
         //wenn stop button aktiv dann stopp button deaktivieren FALLS es ein floor btn ist, bei door open/close bleibt stop active
         if(this.navButtons.Contains(btn) && stopIsActive)
         {
-            btnStop.GetComponent<Renderer>().material.SetColor("_Color", color_btnStopinactive);
+            btnStop.GetComponent<Renderer>().material.SetColor("_Color", ColorManager_script.color_btnInactive);
             stopIsActive = false;
         }
 
@@ -298,7 +302,7 @@ public class ButtonManager : MonoBehaviour
             {
                 yield return new WaitForSeconds(1);
             }
-            btn.GetComponent<Renderer>().material.SetColor("_Color", color_btnInactive);
+            btn.GetComponent<Renderer>().material.SetColor("_Color", ColorManager_script.color_btnInactive);
         }
         yield return new WaitForSeconds(1);
 
