@@ -23,6 +23,7 @@ public class ElevatorMovement : MonoBehaviour
     public float SecondFPos;
     public float endPosDown;
     public float endPosUp;
+    public float offset_to_floor = 0.2f;
 
     GameObject ManagerOfButtons;
     ButtonManager btnManageScript;
@@ -39,9 +40,9 @@ public class ElevatorMovement : MonoBehaviour
         isMoving = false;
         speed = 1;
         currentPos = elevator.transform.position.y;
-        groundFPos = groundF.transform.position.y;
-        FirstFPos = FirstF.transform.position.y;
-        SecondFPos = SecondF.transform.position.y;
+        groundFPos = groundF.transform.position.y + offset_to_floor;
+        FirstFPos = FirstF.transform.position.y + offset_to_floor;
+        SecondFPos = SecondF.transform.position.y + offset_to_floor;
         endPosDown = 0;
         endPosUp = 0;
         //Debug.Log("start:" + groundFPos);
@@ -115,6 +116,7 @@ public class ElevatorMovement : MonoBehaviour
         //Debug.Log("goal: " + endPosUp);
         //slideTime = [0..1]
         //slideTime += speed * t * Time.deltaTime;
+        Debug.Log("\tgoal: " + endPosUp +"\tcurr:" + currentPos);
 
         currentPos = elevator.transform.position.y;
         if (currentPos == endPosUp)
