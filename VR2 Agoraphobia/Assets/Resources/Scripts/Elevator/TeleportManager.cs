@@ -23,6 +23,7 @@ public class TeleportManager : MonoBehaviour
     public GameObject teleport_1;
     public GameObject teleport_2;
     public GameObject teleport_elev; //set child of elevator
+    public GameObject chosen_teleport;
     //spawnpoints
     public GameObject spawn_0;
     public GameObject spawn_1;
@@ -35,11 +36,11 @@ public class TeleportManager : MonoBehaviour
     public GameObject floor_1;
     public GameObject floor_2;
 
-    public float dist_elev = 3f; //distance player to elev floor when standing inside
+    public float dist_elev = 3.8f; //distance player to elev floor when standing inside
     public float touchDist = 0.5f; //min dist to "touch" obj
 
     public GameObject objectToCheck; //controll obj
-
+    public float player_dist_to_elev_floor;
     public float dist_spawn_elev;
     public float dist_spawn_0;
     public float dist_spawn_1;
@@ -77,24 +78,46 @@ public class TeleportManager : MonoBehaviour
     {
         //if player touching ground elev -> spawn elev
         //else find closest spawn
-        Debug.Log("player distance to elev ground: " + GetDistances(objectToCheck));
-        GetClosestSpawn(); 
+        GetClosestSpawn();
         //inside elev sphere = elev sphere
-        if (player_is_inside_elev)
-        {
-            ToggleSphere(teleport_elev);
-            if(GetDistances(teleport_elev) < touchDist)
-            {
-                ActiveSphere(teleport_elev);
-            }
-        }
-        //TODO: make it so that selected telepot sphere depends on where üayer is(if inside telepot = elev telepot)
-        //if player in elev  touching sphere -> player position = closest spawn position
+        Debug.Log("HELLO?!");
 
+        //actives the chosen teleport sphere
+        ToggleSphere(ChooseTeleportSphere());
+        if (GetDistances(chosen_teleport) < touchDist)
+        {
+            ActiveSphere(chosen_teleport);
+        }
     }
 
+    GameObject ChooseTeleportSphere()
+    {
+        if (player_is_inside_elev)
+        {
+            chosen_teleport = teleport_elev;
+        }
+
+        else
+        {
+            if (elevator_movement_script.last_reached_floor == 0)
+            {
+                chosen_teleport = teleport_0;
+            }
+            if (elevator_movement_script.last_reached_floor == 1)
+            {
+                chosen_teleport = teleport_1;
+            }
+            if (elevator_movement_script.last_reached_floor == 2)
+            {
+                chosen_teleport = teleport_2;
+            }
+        }
+        return chosen_teleport;
+    }
+
+
     //check if player inside elevator
-   void isPlayerInsideElevator()
+    void isPlayerInsideElevator()
     {
         if (GetDistances(spawn_elev) < dist_elev)
         {
@@ -102,6 +125,7 @@ public class TeleportManager : MonoBehaviour
         }
         else
             player_is_inside_elev = false;
+        Debug.Log("Is player inside elevator? " + player_is_inside_elev);
     }
 
     //check which spawn is closest
