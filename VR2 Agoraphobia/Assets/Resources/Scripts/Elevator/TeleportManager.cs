@@ -79,12 +79,10 @@ public class TeleportManager : MonoBehaviour
         //if player touching ground elev -> spawn elev
         //else find closest spawn
         GetClosestSpawn();
-        //inside elev sphere = elev sphere
-        Debug.Log("HELLO?!");
 
         //actives the chosen teleport sphere
         ToggleSphere(ChooseTeleportSphere());
-        if (GetDistances(chosen_teleport) < touchDist)
+        if (GetDistances(find_index_Script.indexFinger_L, chosen_teleport) < touchDist || GetDistances(find_index_Script.indexFinger_R, chosen_teleport) < touchDist)
         {
             ActiveSphere(chosen_teleport);
         }
@@ -119,7 +117,7 @@ public class TeleportManager : MonoBehaviour
     //check if player inside elevator
     void isPlayerInsideElevator()
     {
-        if (GetDistances(spawn_elev) < dist_elev)
+        if (GetDistances(Player, spawn_elev) < dist_elev)
         {
             player_is_inside_elev = true;
         }
@@ -132,9 +130,9 @@ public class TeleportManager : MonoBehaviour
     GameObject GetClosestSpawn()
     {
         float[] distances = new float[3];
-        distances[0] = GetDistances(spawn_0);
-        distances[1] = GetDistances(spawn_1);
-        distances[2] = GetDistances(spawn_2);
+        distances[0] = GetDistances(Player, spawn_0);
+        distances[1] = GetDistances(Player, spawn_1);
+        distances[2] = GetDistances(Player, spawn_2);
         //Debug.Log("distance u floor 0 = " + distances[0]);
 
         float min_dist = distances[0];
@@ -157,10 +155,10 @@ public class TeleportManager : MonoBehaviour
         return closest_spawn;
     }
 
-    //check distance between player & obj
-    float GetDistances(GameObject obj)
+    //check distance between 2 obj
+    float GetDistances(GameObject obj_1, GameObject obj_2)
     {
-        return Vector3.Distance(Player.transform.position, obj.transform.position);
+        return Vector3.Distance(obj_1.transform.position, obj_2.transform.position);
     }
     void ToggleSphere(GameObject sphere)
     {
