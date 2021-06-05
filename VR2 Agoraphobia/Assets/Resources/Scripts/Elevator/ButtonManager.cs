@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class ButtonManager : MonoBehaviour
 {
     //buttons to press inside elevator
@@ -32,7 +31,7 @@ public class ButtonManager : MonoBehaviour
     public bool stopIsActive;
 
     //accessable for elev movement
-    public int selectedAnimation;
+    public float selectedAnimation;
     public GameObject selectedBtn;
 
     //distance for buttons and finger
@@ -48,7 +47,7 @@ public class ButtonManager : MonoBehaviour
     public bool callSlide = false;
 
     //elevator movement script 
-    GameObject ElevatorMovement;
+    GameObject ElevatorMovementGameObject;
     ElevatorMovement elevMovement;
 
     
@@ -60,8 +59,8 @@ public class ButtonManager : MonoBehaviour
         doorSlideScript = DoorSliderObj.GetComponent<DoorSlide>();
 
         //elevMovement obj, script
-        ElevatorMovement = GameObject.Find("elevator");
-        elevMovement = ElevatorMovement.GetComponent<ElevatorMovement>();
+        ElevatorMovementGameObject = GameObject.Find("elevator");
+        elevMovement = ElevatorMovementGameObject.GetComponent<ElevatorMovement>();
 
         //Colormanager obj, script
         ColorManager_obj = GameObject.Find("ColorManager");
@@ -109,15 +108,15 @@ public class ButtonManager : MonoBehaviour
 
     void UpdateSelectedButton()
     {
-        bool button_0_was_touched = false;
+        bool button_0_was_touched = false;   
         bool button_1_was_touched = false;
         bool button_2_was_touched = false;
         bool button_stop_was_touched = false;
         bool button_doorOpen_was_touched = false;
         bool button_doorClose_was_touched = false;
-        bool button_floor_0_was_touched = false;
-        bool button_floor_1_was_touched = false;
-        bool button_floor_2_was_touched = false;
+        bool button_on_floor_0_was_touched = false;
+        bool button_on_floor_1_was_touched = false;
+        bool button_on_floor_2_was_touched = false;
 
         //float dist_0 = Vector3.Distance(indexFinger.transform.position, btnLvl_0.transform.position);
         //check distances between buttons and finger
@@ -148,15 +147,15 @@ public class ButtonManager : MonoBehaviour
         }
         if (Vector3.Distance(find_index_Script.indexFinger_R.transform.position, btn_floor_0.transform.position) < touchDist || Vector3.Distance(find_index_Script.indexFinger_L.transform.position, btn_floor_0.transform.position) < touchDist)
         {
-            button_floor_0_was_touched = true;
+            button_on_floor_0_was_touched = true;
         }
         if (Vector3.Distance(find_index_Script.indexFinger_R.transform.position, btn_floor_1.transform.position) < touchDist || Vector3.Distance(find_index_Script.indexFinger_L.transform.position, btn_floor_1.transform.position) < touchDist)
         {
-            button_floor_1_was_touched = true;
+            button_on_floor_1_was_touched = true;
         }
         if (Vector3.Distance(find_index_Script.indexFinger_R.transform.position, btn_floor_2.transform.position) < touchDist || Vector3.Distance(find_index_Script.indexFinger_L.transform.position, btn_floor_2.transform.position) < touchDist)
         {
-            button_floor_2_was_touched = true;
+            button_on_floor_2_was_touched = true;
         }
 
         //stop button check
@@ -171,42 +170,36 @@ public class ButtonManager : MonoBehaviour
 
         if (button_0_was_touched)
         {
-            Debug.Log("touch");
             selectedBtn = btnLvl_0;
-            selectedAnimation = 0;
+            selectedAnimation = ElevatorMovement.ANIM_FLOOR_0;
         }
         if (button_1_was_touched)
         {
-            Debug.Log("touch");
             selectedBtn = btnLvl_1;
-            selectedAnimation = 1;
+            selectedAnimation = ElevatorMovement.ANIM_FLOOR_1;
         }
         if (button_2_was_touched)
         {
-            Debug.Log("touch");
             selectedBtn = btnLvl_2;
-            selectedAnimation = 2;
+            selectedAnimation = ElevatorMovement.ANIM_FLOOR_2;
         }
 
-        if (button_floor_0_was_touched)
+        if (button_on_floor_0_was_touched)
         {
-            Debug.Log("touch");
             selectedBtn = btn_floor_0;
-            selectedAnimation = 0;
+            selectedAnimation = ElevatorMovement.ANIM_FLOOR_0;
         }
 
-        if (button_floor_1_was_touched)
+        if (button_on_floor_1_was_touched)
         {
-            Debug.Log("touch");
             selectedBtn = btn_floor_1;
-            selectedAnimation = 1;
+            selectedAnimation = ElevatorMovement.ANIM_FLOOR_1;
         }
 
-        if (button_floor_2_was_touched)
+        if (button_on_floor_2_was_touched)
         {
-            Debug.Log("touch");
             selectedBtn = btn_floor_2;
-            selectedAnimation = 2;
+            selectedAnimation = ElevatorMovement.ANIM_FLOOR_2;
         }
 
         //close door
@@ -214,7 +207,7 @@ public class ButtonManager : MonoBehaviour
         if (button_doorClose_was_touched)
         {
             selectedBtn = btnCloseDoor;
-            Debug.Log("closig oasdnjosandosan" + doorSlideScript.isOpen);
+           // Debug.Log("closig oasdnjosandosan" + doorSlideScript.isOpen);
             doorSlideScript.CloseDoor();
             if (!doorSlideScript.doorsAreMoving)
             {
@@ -250,7 +243,7 @@ public class ButtonManager : MonoBehaviour
 
     void ActivateBtn(GameObject btn)
     {
-        Debug.Log("activate");
+       // Debug.Log("activate");
         btn.GetComponent<Renderer>().material.SetColor("_Color", ColorManager_script.color_btnActive);
 
         //wenn stop button aktiv dann stopp button deaktivieren FALLS es ein floor btn ist, bei door open/close bleibt stop active
@@ -268,8 +261,9 @@ public class ButtonManager : MonoBehaviour
         }
         
         // wait for it to be closed
-        if (!doorSlideScript.doorsAreMoving)
+        if (!doorSlideScript.doorsAreMoving && !elevMovement.isMoving)
         {
+            //elevMovement.StartShaking();
             elevMovement.startMoving();
         }
         
@@ -297,7 +291,7 @@ public class ButtonManager : MonoBehaviour
         else*/
         if (!btn.name.Equals("stop"))
         {
-            Debug.Log("inactive btn color for: " + btn);
+           // Debug.Log("inactive btn color for: " + btn);
             //if(selectedAnimation == elevMovement.last_reached_floor) //for some reason doesn't work. 
             {
                 yield return new WaitForSeconds(1);

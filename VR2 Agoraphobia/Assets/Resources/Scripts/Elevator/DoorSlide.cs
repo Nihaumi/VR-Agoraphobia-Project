@@ -24,11 +24,19 @@ public class DoorSlide : MonoBehaviour
     GameObject ManagerOfButtons;
     ButtonManager btnManageScript;
 
+    //sound script
+    public GameObject sound_obj;
+    public Sound sound_script;
+
     // Start is called before the first frame update
     void Start()
     {
+        //scripts
         ManagerOfButtons = GameObject.Find("ButtonManager");
         btnManageScript = ManagerOfButtons.GetComponent<ButtonManager>();
+
+        sound_obj = GameObject.Find("AudioManager_elev");
+        sound_script= sound_obj.GetComponent<Sound>();
 
         isOpen = false;
         startPosL = doorLeft.transform.position.z;
@@ -59,14 +67,13 @@ public class DoorSlide : MonoBehaviour
 
         if (doorsAreMoving)
         {
-            Debug.Log("enter doorsAreMoving");
+           // Debug.Log("enter doorsAreMoving");
             doorsAreMoving = UpdateDoorPosition();
         }
     }
 
     public bool UpdateDoorPosition()
     {
-        Debug.Log("UpdateDoorPosition");
 
         doorLeft.transform.position = new Vector3(doorLeft.transform.position.x, doorLeft.transform.position.y, Mathf.Lerp(startPosL, endPosL, slideTime));
         doorRight.transform.position = new Vector3(doorRight.transform.position.x, doorRight.transform.position.y, Mathf.Lerp(startPosR, endPosR, slideTime));
@@ -84,17 +91,31 @@ public class DoorSlide : MonoBehaviour
         {
             slideTime = 1;
             doorsAreMoving = false;
+            //button deactivate
             btnManageScript.DeactivateBtn(btnManageScript.btnOpenDoor);
+            //sound stop
+            StartCoroutine("WaitASecond");
+ 
             return false;
         }
         else if (slideTime < 0)
         {
             slideTime = 0;
             doorsAreMoving = false;
+            //button deactivate
             btnManageScript.DeactivateBtn(btnManageScript.btnCloseDoor);
+            //sound stop
+            StartCoroutine("WaitASecond");
+
             return false;
         }
         return true;
+    }
+
+    IEnumerator WaitASecond()
+    {
+        yield return new WaitForSeconds(2f);
+        sound_script.StopSound(sound_script.current_audio_source);
     }
 
     public void OpenDoor()
@@ -106,6 +127,9 @@ public class DoorSlide : MonoBehaviour
         doorsAreMoving = true;
 
         this.isOpen = true;
+
+        //play sound
+        sound_script.PlaySound(sound_script.door_opening);
     }
 
     public void CloseDoor()
@@ -117,5 +141,8 @@ public class DoorSlide : MonoBehaviour
         doorsAreMoving = true;
 
         this.isOpen = false;
+
+        //play sound
+        sound_script.PlaySound(sound_script.door_closing);
     }
 }
