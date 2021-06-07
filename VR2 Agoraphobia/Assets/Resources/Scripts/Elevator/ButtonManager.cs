@@ -50,7 +50,10 @@ public class ButtonManager : MonoBehaviour
     GameObject ElevatorMovementGameObject;
     ElevatorMovement elevMovement;
 
-    
+    //Sound scipt
+    public GameObject sound_obj;
+    public Sound sound_script;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -65,6 +68,10 @@ public class ButtonManager : MonoBehaviour
         //Colormanager obj, script
         ColorManager_obj = GameObject.Find("ColorManager");
         ColorManager_script = ColorManager_obj.GetComponent<ColorManager>();
+
+        //sound script
+        sound_obj = GameObject.Find("AudioManager_elev");
+        sound_script = sound_obj.GetComponent<Sound>();
 
         //get objects
         btnLvl_0 = GameObject.Find("0");
@@ -206,6 +213,10 @@ public class ButtonManager : MonoBehaviour
         //wait for door to be closed
         if (button_doorClose_was_touched)
         {
+            //sound
+           // sound_script.PlaySound(sound_script.button_press);
+            //elevMovement.StartCoroutine("HandleStopSounds");
+
             selectedBtn = btnCloseDoor;
            // Debug.Log("closig oasdnjosandosan" + doorSlideScript.isOpen);
             doorSlideScript.CloseDoor();
@@ -217,6 +228,10 @@ public class ButtonManager : MonoBehaviour
 
         if (button_doorOpen_was_touched)
         {
+            //sound
+           // sound_script.PlaySound(sound_script.button_press);
+            //elevMovement.StartCoroutine("HandleStopSounds");
+
             selectedBtn = btnOpenDoor;
             doorSlideScript.OpenDoor();
             if (!doorSlideScript.doorsAreMoving)
@@ -231,6 +246,10 @@ public class ButtonManager : MonoBehaviour
     {
         stopIsActive = true;
 
+      /*  //sound
+        sound_script.PlaySound(sound_script.button_press);
+        doorSlideScript.StartCoroutine("WaitASecond");
+      */
         if (selectedBtn && !selectedBtn.name.Equals("stop"))
         {
             selectedBtn.GetComponent<Renderer>().material.SetColor("_Color", ColorManager_script.color_btnInactive);
@@ -245,9 +264,13 @@ public class ButtonManager : MonoBehaviour
     {
        // Debug.Log("activate");
         btn.GetComponent<Renderer>().material.SetColor("_Color", ColorManager_script.color_btnActive);
-
+/*
+        //sond
+        sound_script.PlaySound(sound_script.button_press);
+        doorSlideScript.StartCoroutine("WaitASecond");
+*/
         //wenn stop button aktiv dann stopp button deaktivieren FALLS es ein floor btn ist, bei door open/close bleibt stop active
-        if(this.navButtons.Contains(btn) && stopIsActive)
+        if (this.navButtons.Contains(btn) && stopIsActive)
         {
             btnStop.GetComponent<Renderer>().material.SetColor("_Color", ColorManager_script.color_btnInactive);
             stopIsActive = false;

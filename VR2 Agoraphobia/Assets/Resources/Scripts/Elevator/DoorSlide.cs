@@ -86,6 +86,7 @@ public class DoorSlide : MonoBehaviour
         }
 
         slideTime += direction * t * Time.deltaTime;
+        //Debug.Log("Slide Time: " + slideTime);
 
         if (slideTime > 1)
         {
@@ -94,7 +95,7 @@ public class DoorSlide : MonoBehaviour
             //button deactivate
             btnManageScript.DeactivateBtn(btnManageScript.btnOpenDoor);
             //sound stop
-            StartCoroutine("WaitASecond");
+           // sound_script.StartCoroutine("WaitASecond");
  
             return false;
         }
@@ -104,18 +105,12 @@ public class DoorSlide : MonoBehaviour
             doorsAreMoving = false;
             //button deactivate
             btnManageScript.DeactivateBtn(btnManageScript.btnCloseDoor);
-            //sound stop
-            StartCoroutine("WaitASecond");
-
+           /* //sound stop
+            sound_script.StartCoroutine("WaitASecond");
+           */
             return false;
         }
         return true;
-    }
-
-    IEnumerator WaitASecond()
-    {
-        yield return new WaitForSeconds(2f);
-        sound_script.StopSound(sound_script.current_audio_source);
     }
 
     public void OpenDoor()
@@ -123,13 +118,13 @@ public class DoorSlide : MonoBehaviour
         // assert that doors are closed
         Debug.Assert(!this.isOpen, "Door was open, but was supposed to open.");
 
+        //play sound
+      //  sound_script.PlaySound(sound_script.door_opening);
+
         // signal doors should open
         doorsAreMoving = true;
 
         this.isOpen = true;
-
-        //play sound
-        sound_script.PlaySound(sound_script.door_opening);
     }
 
     public void CloseDoor()
@@ -143,6 +138,6 @@ public class DoorSlide : MonoBehaviour
         this.isOpen = false;
 
         //play sound
-        sound_script.PlaySound(sound_script.door_closing);
+       // sound_script.PlaySound(sound_script.door_closing);
     }
 }

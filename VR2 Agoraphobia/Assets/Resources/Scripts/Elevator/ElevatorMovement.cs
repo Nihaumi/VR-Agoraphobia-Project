@@ -81,18 +81,18 @@ public class ElevatorMovement : MonoBehaviour
         if (moving)
         {
             //play sound
-            if (!sound_script.sound_is_playing)
+          /*  if (!sound_script.sound_is_playing)
             {
                 sound_script.PlaySound(sound_script.moving);
                 sound_script.moving.loop = true;
-            }
+            }*/
 
             moving = UpdateElevatorPosition();
            
             if (!moving)
             {
                 last_reached_floor = last_selected_floor;
-                StartCoroutine("HandleStopSounds");
+               // sound_script.StartCoroutine("HandleStopSounds");
 
                 // Debug.Log("last selected: " + last_selected_floor);
                 //Debug.Log("last reached: " + last_reached_floor);
@@ -168,22 +168,13 @@ public class ElevatorMovement : MonoBehaviour
     {
         //Debug.Log("stopMoving");
         moving = false;
-        StartCoroutine("HandleStopSounds");
+       // StartCoroutine("HandleStopSounds");
 
         if (btnManageScript.selectedBtn != null)
         {
           //  Debug.Log("animationend");
             btnManageScript.DeactivateBtn(btnManageScript.selectedBtn);
         }
-    }
-
-    IEnumerator HandleStopSounds()
-    {
-        sound_script.PlaySound(sound_script.stop_moving);
-        sound_script.StopSound(sound_script.moving);
-        yield return new WaitForSeconds(1.5f);
-        sound_script.StopSound(sound_script.current_audio_source);
-
     }
 
     public bool UpdateElevatorPosition()
